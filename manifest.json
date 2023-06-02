@@ -1,0 +1,33 @@
+{
+    "name": "SAM Универсальный вставлятель",
+    "description": "Fill your data",
+    "version": "1.0",
+    "manifest_version": 3,
+    "background": {
+      "service_worker": "./scripts/background.js"
+    },
+    "action": {
+        "default_popup": "./popup.html"
+    },
+    "icons": {
+        "16": "./icons/favicon-16x16.png",
+        "32": "./icons/favicon-32x32.png"
+
+    },
+    "permissions": [
+      "tabs",
+      "activeTab",
+      "<all_urls>",
+      "scripting",
+      "storage"
+    ],
+    "content_scripts": [
+      {
+        "js": ["scripts/content.js"],
+        "css": ["/styles/style.css"],
+        "matches": [
+          "<all_urls>"
+        ]
+      }
+    ]
+}
