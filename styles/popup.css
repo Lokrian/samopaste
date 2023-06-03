@@ -54,3 +54,15 @@ body {
     border: none;
     border-radius: 0.3rem;
 }
+
+.copy-button:hover {
+    transition: all 0.2s;
+    background-color: rgb(252, 174, 245);
+}
+
+.wrong-url {
+    width: 400px;
+    color: #fff;
+    text-align: center;
+    padding: 2rem;
+}

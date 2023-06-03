@@ -17,7 +17,6 @@
     "permissions": [
       "tabs",
       "activeTab",
-      "<all_urls>",
       "scripting",
       "storage"
     ],
