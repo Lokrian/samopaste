@@ -132,7 +132,7 @@ const buttons = [
             setTimeout(() => {
                 const branch = document.querySelector(this.branch);
                 branch.click();
-            }, 500);
+            }, 300);
         },
     },
 ];
@@ -219,10 +219,96 @@ const setAnswers = function () {
     answers.push(sessionStorage.getItem('email'));
     answers.push(sessionStorage.getItem('option'));
 };
+// Массив с словами триггерами
+const harmfulWords = [
+    'сотрудник',
+    'сотрудники',
+    'сотрудниками',
+    'сотрудникам',
+    'включен',
+    'включена',
+    'включён',
+    'оформлен',
+    'оформлена',
+    'оплачен',
+    'оплачена',
+    'проведен',
+    'проведена',
+    'проведён',
+    'выявлен',
+    'выявлена',
+    'указан',
+    'указана',
+    "'",
+    'замечено',
+    'замечена',
+    'замечен',
+    'зарегистрировано',
+    'зарегистрирована',
+    'зарегистрирован',
+    'установлен',
+    'установлено',
+    'установлена',
+    'решился',
+    'решилась',
+    'создан',
+    'создана',
+];
+// Ищет ответы оператора, сканирует их на слова триггеры и показывает на странице
+const showHarmfulWords = function () {
+    setTimeout(() => {
+        const operAnswersBlock = document.querySelectorAll(
+            '.message__item__content__text'
+        );
 
+        findBadAnswerBlock(operAnswersBlock);
+    }, 3000);
+};
+// Ищет блок со словом триггером
+const findBadAnswerBlock = function (answersBlocks) {
+    for (let answerBlock of answersBlocks) {
+        const answerWordsArray = answerBlock.innerText.split(' ');
+        for (let harmfulWord of harmfulWords) {
+            for (let word of answerWordsArray) {
+                if (
+                    word.toLowerCase().replace(/[\s.,%]/g, '') ==
+                    harmfulWord.toLowerCase()
+                ) {
+                    const changedAnswerBlockHTML =
+                        answerBlock.innerHTML.replace(
+                            word,
+                            `<i style="color: red;">${word}</i>`
+                        );
+                    answerBlock.innerHTML = changedAnswerBlockHTML;
+                }
+            }
+        }
+
+        // if (answerBlock.innerText.toLowerCase().includes(harmfulWord)) {
+        //     console.log(harmfulWord, answerBlock);
+        //     const harmfulWordWithoutCase = new RegExp(harmfulWord, 'gi');
+        //     const changedAnswerBlockHTML = answerBlock.innerHTML.replace(
+        //         harmfulWordWithoutCase,
+        //         `<i style="color: red;">${harmfulWord}</i>`
+        //     );
+        //     answerBlock.innerHTML = changedAnswerBlockHTML;
+        // }
+        // }
+    }
+};
+
+// Запускает логику в зависимости от того, где находится пользователь
 const start = function () {
-    setAnswers();
-    setButtonOnPage();
+    if (
+        window.location.origin === 'https://portal.infobip.com' ||
+        window.location.origin === 'https://portal-ru.infobip.com'
+    ) {
+        showHarmfulWords();
+        console.log(window.location.origin);
+    } else {
+        setAnswers();
+        setButtonOnPage();
+    }
 };
 
 start();

@@ -58,8 +58,9 @@ const validUrl = async function () {
     let tabs = await chrome.tabs.query(queryOptions);
 
     if (
-        tabs[0].url !=
-        'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/viewform'
+        !tabs[0].url.includes(
+            'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/viewform'
+        )
     ) {
         const body = document.getElementById('body');
         body.innerHTML = `<h1 class='wrong-url'>Перейдите на страницу с отправкой формы</h1>`;
