@@ -69,6 +69,249 @@ const options = [
             '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div.Qr7Oae > div > div > div.vQES8d > div > div.OA0qNb.ncFHed.QXL7Te > div:nth-child(14)',
     },
 ];
+// Массив со словами триггерами
+const harmfulWords = [
+    'сотрудник',
+    'сотрудника',
+    'сотруднику',
+    'сотрудником',
+    'сотруднике',
+    'сотрудники',
+    'сотрудниками',
+    'сотрудникам',
+    'сотрудников',
+    'сотрудниках',
+    'включен',
+    'включена',
+    'включён',
+    // 'оформлен',
+    // 'оформлена',
+    'оплачен',
+    'оплачена',
+    'проведен',
+    'проведена',
+    'проведён',
+    'выявлен',
+    'выявлена',
+    'указан',
+    'указана',
+    "'",
+    'замечено',
+    'замечена',
+    'замечен',
+    'зарегистрировано',
+    'зарегистрирована',
+    'зарегистрирован',
+    'установлен',
+    'установлено',
+    'установлена',
+    'установлены',
+    'решился',
+    'решилась',
+    'решилось',
+    'создан',
+    'создана',
+    'создано',
+    'созданы',
+    'сделан',
+    'сделана',
+    'сделаны',
+    'ЦФЗ',
+    'вебфон',
+    'хаб',
+    'задача',
+    'задачу',
+    'сэмпл',
+    'средства',
+    'ожидайте',
+    'ожидание',
+    'ожидаем',
+    'прощения',
+    'склад',
+    'склада',
+    'складу',
+    'складом',
+    'складе',
+    'склады',
+    'складов',
+    'складам',
+    'складами',
+    'складах',
+    'указанный',
+    'внимательнее',
+    'магазин-склад',
+    'магазин-складе',
+    'магазин-склада',
+    'магазином-складом',
+    '',
+];
+// Массив со словами названиями секций приложения
+const sectionsWords = [
+    'корзина',
+    'корзины',
+    'корзине',
+    'корзину',
+    'корзиной',
+    'корзиною',
+    'профиль',
+    'профиля',
+    'профиле',
+    'профилю',
+    'профилем',
+    'комментарий',
+    'комментария',
+    'комментарием',
+    'комментарии',
+    'комментариях',
+    '',
+];
+// Объект с ключами в форме слова, которе проверяется на повторы в чате. Элемент содержит массив со склонёнными словами от имени ключа.
+const wordsCheckedForRepeat = {
+    'курьер': [
+        'курьер',
+        'курьера',
+        'курьеру',
+        'курьером',
+        'курьере',
+        'курьеры',
+        'курьеров',
+        'курьерах',
+        'курьерам',
+        'курьерами',
+    ],
+    'коллеги': [
+        'коллега',
+        'коллеги',
+        'коллеге',
+        'коллегу',
+        'коллегой',
+        'коллегами',
+        'коллегам',
+        'коллег',
+        'коллегах',
+    ],
+    'телефон': [
+        'телефон',
+        'телефона',
+        'телефону',
+        'телефоном',
+        'телефоне',
+        'телефоны',
+        'телефонов',
+        'телефонам',
+        'телефонами',
+        'телефонах',
+    ],
+    'даркстор': [
+        'даркстор',
+        'даркстора',
+        'даркстору',
+        'даркстором',
+        'дарксторе',
+        'дарксторы',
+        'дарксторов',
+        'дакрсторам',
+        'дарксторами',
+    ],
+    'товар': [
+        'товар',
+        'товара',
+        'товару',
+        'товаром',
+        'товаре',
+        'товары',
+        'товаров',
+        'товарам',
+        'товарами',
+        'товарах',
+    ],
+    'скидка': [
+        'скидка',
+        'скидки',
+        'скидке',
+        'скидку',
+        'скидкой',
+        'скидкою',
+        'скидок',
+        'скидкам',
+        'скидками',
+        'скидках',
+    ],
+    'заказ': [
+        'заказ',
+        'заказа',
+        'заказу',
+        'заказом',
+        'заказе',
+        'заказы',
+        'заказов',
+        'заказам',
+        'заказами',
+        'заказах',
+    ],
+    'информация': [
+        'информация',
+        'информации',
+        'информацию',
+        'информацией',
+        'информаций',
+        'информациям',
+        'информациями',
+        'информациях',
+    ],
+    'продукт': [
+        'продукт',
+        'продукта',
+        'продукту',
+        'продуктом',
+        'продукте',
+        'продукты',
+        'продуктов',
+        'продуктам',
+        'продуктами',
+        'продуктах',
+    ],
+    'приложение': [
+        'приложение',
+        'приложения',
+        'приложению',
+        'приложением',
+        'приложении',
+        'приложения',
+        'приложений',
+        'приложениям',
+        'приложениями',
+        'приложениях',
+    ],
+    'покупка': [
+        'покупка',
+        'покупки',
+        'покупке',
+        'покупку',
+        'покупкой',
+        'покупкою',
+        'покупок',
+        'покупкам',
+        'покупками',
+        'покупках',
+    ],
+    'ответ': [
+        'ответ',
+        'ответа',
+        'ответу',
+        'ответом',
+        'ответе',
+        'ответы',
+        'ответов',
+        'ответам',
+        'ответами',
+        'ответах',
+    ],
+    'фото': ['фото'],
+    'пожалуйста': ['пожалуйста'],
+};
+// Изменяемый объект, в который записывается, в формате слово: число, слово и сколько раз оно повторяется в чате.
+let repeatedWords = {};
 // Массив с объектами кнопок, которые рисуются в зависимости от страницы. У каждой кнопки свой функционал.
 const buttons = [
     {
@@ -136,7 +379,14 @@ const buttons = [
         },
     },
 ];
-// Получает ответ из popup.js и записывает его в sessionStorage
+// Содержит состояние(прошла ли операция по поиску слов на странице) и, если они есть, слова с ошибками.
+const answerWithMistakeWords = {
+    status: 'Operation in progress',
+    wordsWithMistakes: [],
+};
+/*  Получает ответ из popup.js и записывает его в sessionStorage
+    Получает запрос из popup.js на наличие слов с ошибочными словами на странице и отправляет их обратно, чтобы отрисовать в popup
+    Получает запрос из popup.js на проверку наличия данных в поле email в sessionStorage */
 chrome.runtime.onConnect.addListener(function (port) {
     port.onMessage.addListener(function (msg) {
         if (port.name === 'formport') {
@@ -151,8 +401,6 @@ chrome.runtime.onConnect.addListener(function (port) {
                 answers.push(sessionStorage.getItem(key));
             }
 
-            console.log(answers);
-
             if (data) {
                 port.postMessage({
                     exists: true,
@@ -162,10 +410,27 @@ chrome.runtime.onConnect.addListener(function (port) {
                     exists: false,
                 });
             }
+        } else if (port.name === 'mistakeWord') {
+            let sendingInterval = setInterval(() => {
+                if (answerWithMistakeWords.status === 'Operation in progress') {
+                    console.log('Operation in progress');
+                } else if (
+                    answerWithMistakeWords.status === 'Operation is complete'
+                ) {
+                    port.postMessage(answerWithMistakeWords.wordsWithMistakes);
+                    clearInterval(sendingInterval);
+                    console.log('Stopped');
+                }
+            }, 1000);
+        } else if (port.name === 'checkEmail') {
+            const email = sessionStorage.getItem('email');
+            port.postMessage({
+                email,
+            });
         }
     });
 });
-
+// Класс для создания разных кнопок на разных страницах
 class Button {
     constructor(
         button,
@@ -214,97 +479,126 @@ const setButtonOnPage = function () {
         }
     }
 };
-//Устанавливает ответы в массив answer из sessionStorage
+// Устанавливает ответы в массив answer из sessionStorage
 const setAnswers = function () {
     answers.push(sessionStorage.getItem('email'));
     answers.push(sessionStorage.getItem('option'));
 };
-// Массив с словами триггерами
-const harmfulWords = [
-    'сотрудник',
-    'сотрудники',
-    'сотрудниками',
-    'сотрудникам',
-    'включен',
-    'включена',
-    'включён',
-    'оформлен',
-    'оформлена',
-    'оплачен',
-    'оплачена',
-    'проведен',
-    'проведена',
-    'проведён',
-    'выявлен',
-    'выявлена',
-    'указан',
-    'указана',
-    "'",
-    'замечено',
-    'замечена',
-    'замечен',
-    'зарегистрировано',
-    'зарегистрирована',
-    'зарегистрирован',
-    'установлен',
-    'установлено',
-    'установлена',
-    'решился',
-    'решилась',
-    'создан',
-    'создана',
-];
-// Ищет ответы оператора, сканирует их на слова триггеры и показывает на странице
-const showHarmfulWords = function () {
+// Ищет все ответы оператора в чате и запускает проверки
+const initOperAnswers = function () {
     setTimeout(() => {
-        const operAnswersBlock = document.querySelectorAll(
-            '.message__item__content__text'
+        const operAnswersBlocks = document.querySelectorAll(
+            '.message__item.outbound > .message__item__content.fs-exclude > .message__item__content__body > .message__item__content__text > span'
         );
-
-        findBadAnswerBlock(operAnswersBlock);
-    }, 3000);
+        findBadAnswerBlock(operAnswersBlocks);
+    }, 4500);
 };
-// Ищет блок со словом триггером
+// Проходит по массиву всех ответов оператора и создаёт массив со словами из проверяемого блока, далее запускает проверку этого массива
 const findBadAnswerBlock = function (answersBlocks) {
     for (let answerBlock of answersBlocks) {
-        const answerWordsArray = answerBlock.innerText.split(' ');
-        for (let harmfulWord of harmfulWords) {
-            for (let word of answerWordsArray) {
-                if (
-                    word.toLowerCase().replace(/[\s.,%]/g, '') ==
-                    harmfulWord.toLowerCase()
-                ) {
-                    const changedAnswerBlockHTML =
-                        answerBlock.innerHTML.replace(
-                            word,
-                            `<i style="color: red;">${word}</i>`
-                        );
-                    answerBlock.innerHTML = changedAnswerBlockHTML;
+        let re = / |\n/;
+        const arrayOfWordsFromAnswer = answerBlock.innerText.split(re);
+        countWordsInChat(arrayOfWordsFromAnswer);
+        findWrongWordsInAnswerBlock(answerBlock, arrayOfWordsFromAnswer);
+        checkCorrectNamesOfSections(answerBlock, arrayOfWordsFromAnswer);
+        checkMistakesInWords(answerBlock.innerText);
+    }
+};
+// Проверяет есть ли в блоке с ответом неверные слова
+const findWrongWordsInAnswerBlock = function (
+    answerBlock,
+    arrayOfWordsFromAnswer
+) {
+    for (let harmfulWord of harmfulWords) {
+        for (let word of arrayOfWordsFromAnswer) {
+            if (
+                word.toLowerCase().replace(/[\s.,?!%]/g, '') ==
+                harmfulWord.toLowerCase()
+            ) {
+                setChangedWordToAnswerBlock(answerBlock, word);
+            }
+        }
+    }
+};
+// Выделяет в блоке с ответом оператора слово, которое оказалось ошибочным.
+const setChangedWordToAnswerBlock = function (answerBlock, badWord) {
+    const changedAnswerBlockHTML = answerBlock.innerHTML.replace(
+        badWord,
+        `<i style="color: red;">${badWord}</i>`
+    );
+    answerBlock.innerHTML = changedAnswerBlockHTML;
+};
+// Проверяет блок с ответом оператора на наличие слов из секций приложения, которые написаны с маленькой буквы
+const checkCorrectNamesOfSections = function (
+    answerBlock,
+    arrayOfWordsFromAnswer
+) {
+    for (let sectionWord of sectionsWords) {
+        if (sectionWord != '') {
+            for (let word of arrayOfWordsFromAnswer) {
+                if (word != '') {
+                    const wordUpperFirstLetter =
+                        word[0].toUpperCase() + word.slice(1);
+
+                    if (
+                        word.toLowerCase().replace(/[\s.,%]/g, '') ==
+                            sectionWord.toLowerCase() &&
+                        wordUpperFirstLetter != word
+                    ) {
+                        setChangedWordToAnswerBlock(answerBlock, word);
+                    }
+                } else {
+                    console.log('Wazup my boy!');
                 }
             }
         }
-
-        // if (answerBlock.innerText.toLowerCase().includes(harmfulWord)) {
-        //     console.log(harmfulWord, answerBlock);
-        //     const harmfulWordWithoutCase = new RegExp(harmfulWord, 'gi');
-        //     const changedAnswerBlockHTML = answerBlock.innerHTML.replace(
-        //         harmfulWordWithoutCase,
-        //         `<i style="color: red;">${harmfulWord}</i>`
-        //     );
-        //     answerBlock.innerHTML = changedAnswerBlockHTML;
-        // }
-        // }
     }
 };
+// Отправляет запрос на сайт яндекса с текстом, в котором нужно проверить слова
+const checkMistakesInWords = async function (text) {
+    let response = await fetch(
+        'https://speller.yandex.net/services/spellservice.json/checkText?text=' +
+            text
+    );
 
+    if (response.ok) {
+        response.json().then((result) => {
+            if (result[0]) {
+                answerWithMistakeWords.wordsWithMistakes.push(result[0].word);
+            }
+        });
+    }
+    answerWithMistakeWords.status = 'Operation is complete';
+};
+// Считает количество повторяемых слов, которые входят в объект wordsCheckedForRepeat и записывает их в repeatedWords.
+const countWordsInChat = function (words) {
+    // Проходим по всем словам и применяем к ним логику.
+    words.forEach((e) => {
+        e = e.toLowerCase();
+        e = e.replace(/[\.,%?!]/g, '');
+        // Проходит по объекту wordsCheckedForRepeat ключами
+        for (let key in wordsCheckedForRepeat) {
+            // Проходит по массиву, который находится под ключом. Каждый элемент массива сравнивает со словом, которе записано в 'e'
+            wordsCheckedForRepeat[key].map((scannedWord) => {
+                if (e === scannedWord) {
+                    if (Object.keys(repeatedWords).includes(key)) {
+                        repeatedWords[`${key}`]++;
+                    } else {
+                        repeatedWords[`${key}`] = 1;
+                    }
+                }
+            });
+        }
+    });
+};
 // Запускает логику в зависимости от того, где находится пользователь
 const start = function () {
     if (
         window.location.origin === 'https://portal.infobip.com' ||
-        window.location.origin === 'https://portal-ru.infobip.com'
+        window.location.origin === 'https://portal-ru.infobip.com' ||
+        window.location.origin === 'https://portal2.infobip.com'
     ) {
-        showHarmfulWords();
-        console.log(window.location.origin);
+        initOperAnswers();
     } else {
         setAnswers();
         setButtonOnPage();
