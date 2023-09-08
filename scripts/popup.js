@@ -1,4 +1,43 @@
 'use strict';
+const navBlock = `
+            <div class="nav">
+                <div class="info-about-chat">Информация о чате</div>
+                <div class="copy-page">Теги</div>
+                <div class="contacts">Контакты и вопросы</div>
+            </div>
+`;
+
+const divContent = `
+        <div id="content"></div>
+    `;
+
+const contentOfCopyPage = `
+        <div class="copy-page">
+            <div class="tags">
+                <h3>ТЕГИ</h3>
+                    <ul>
+                        <li class="click-for-copy-list-item" clipboard-value="«Ошибка очереди Лия»">«Ошибка очереди Лия»</li>
+                        <li class="click-for-copy-list-item" clipboard-value="«Лия плохой ответ»">«Лия плохой ответ»</li>
+                        <li class="click-for-copy-list-item" clipboard-value="«Неверный перевод»">«Неверный перевод»</li>
+                    </ul>
+            </div>
+            <div class="signs">
+                <h3>ЗНАКИ</h3>
+                <ul>
+                    <li class="click-for-copy-list-item" clipboard-value="«»">Кавычки: «»</li>
+                    <li class="click-for-copy-list-item" clipboard-value="—">Длинное тире: —</li>
+                    <li class="click-for-copy-list-item" clipboard-value="–">Короткое тире: –</li>
+                    <li class="click-for-copy-list-item" clipboard-value="−">Минус: −</li>
+                    <li class="click-for-copy-list-item" clipboard-value="→">Стрелочка: →</li>
+                </ul>
+            </div>
+        </div>
+    `;
+
+const divRepeatedWords = `
+    <div id="repeated-words"></div>
+`;
+
 // Отправляет запрос в content и узнаёт, есть ли в sessionStorage email. Если ответ не пустой заполняет поле email
 const checkIfEmailIsSaved = async function (e) {
     let queryOptions = { active: true, currentWindow: true };
@@ -121,24 +160,9 @@ const showFillFormPage = function () {
     );
 };
 // Отправляет запрос в content.js и в зависимости от ответа заполняет html
-const showChatInfoPage = async function (e) {
+const makeRequestForWrongWords = async function (e) {
     let queryOptions = { active: true, currentWindow: true };
     let tabs = await chrome.tabs.query(queryOptions);
-
-    const body = document.getElementById('body');
-    const divWrapper = `
-        <div id="wrapper"></div>
-    `;
-    body.insertAdjacentHTML('beforeend', divWrapper);
-    const blockWraper = document.getElementById('wrapper');
-
-    const blockScanningChat = `
-    <div class="scan-chat">
-        <h1>Чат сканируется</h1>
-        <img src='../icons/loading.gif' alt='загрузка'>
-    </div>    
-    `;
-    blockWraper.insertAdjacentHTML('beforeend', blockScanningChat);
 
     // Открываем соединение
     const port = chrome.tabs.connect(tabs[0].id, {
@@ -150,33 +174,148 @@ const showChatInfoPage = async function (e) {
     });
 
     port.onMessage.addListener(function (msg) {
-        if (msg.length < 1) {
-            blockWraper.innerHTML = '';
-            blockWraper.insertAdjacentHTML(
-                'afterbegin',
-                `
-                    <h2>Не нашёл незнакомых слов</h2>
-                `
-            );
-        } else {
-            blockWraper.innerHTML = '';
-            blockWraper.insertAdjacentHTML(
-                'afterbegin',
-                `
-                    <h2>Я не знаю слова: </h2>
-                    <list id="wrong-words-list"></list>
-                `
-            );
-            msg.map((word) => {
-                document.getElementById('wrong-words-list').insertAdjacentHTML(
-                    'beforeend',
-                    `
-                        <li>${word}</li>
-                    `
-                );
-            });
-        }
+        showInfoAboutWrongWords(msg);
     });
+};
+
+const makeRequestForNumberOfWords = async function (e) {
+    let queryOptions = { active: true, currentWindow: true };
+    let tabs = await chrome.tabs.query(queryOptions);
+
+    // Открываем соединение
+    const port = chrome.tabs.connect(tabs[0].id, {
+        name: 'wordCounter',
+    });
+
+    port.postMessage({
+        request: 'I need your help, dude!',
+    });
+
+    port.onMessage.addListener(function (msg) {
+        delete msg.repeatedWords.status;
+        showCountedWords(msg.repeatedWords);
+    });
+};
+
+const renderNav = () => {
+    const body = document.getElementById('body');
+    body.innerHTML = '';
+    body.insertAdjacentHTML('beforeend', divContent);
+    body.insertAdjacentHTML('afterbegin', navBlock);
+
+    document.querySelector('.info-about-chat').addEventListener('click', () => {
+        renderBonesForChatInfoPage();
+    });
+    document.querySelector('.copy-page').addEventListener('click', () => {
+        renderCopyPage();
+    });
+};
+
+const renderBonesForChatInfoPage = () => {
+    renderNav();
+
+    const divWrongWords = `
+        <div id="wrong-words"></div>
+    `;
+    document
+        .getElementById('content')
+        .insertAdjacentHTML('beforeend', divWrongWords);
+    const blockWrongWords = document.getElementById('wrong-words');
+
+    const blockScanningChat = `
+    <div class="scan-chat">
+        <h1>Чат сканируется</h1>
+        <img src='../icons/loading.gif' alt='загрузка'>
+    </div>    
+    `;
+    blockWrongWords.insertAdjacentHTML('beforeend', blockScanningChat);
+
+    makeRequestForWrongWords();
+    makeRequestForNumberOfWords();
+};
+
+const showInfoAboutWrongWords = (msg) => {
+    const blockWrongWords = document.getElementById('wrong-words');
+
+    if (msg.length < 1) {
+        blockWrongWords.innerHTML = '';
+        blockWrongWords.insertAdjacentHTML(
+            'afterbegin',
+            `
+                <h2>Не нашёл незнакомых слов</h2>
+            `
+        );
+    } else {
+        blockWrongWords.innerHTML = '';
+        blockWrongWords.insertAdjacentHTML(
+            'afterbegin',
+            `
+                <h2>Не знаю слова: </h2>
+                <list id="wrong-words-list"></list>
+            `
+        );
+        msg.map((word) => {
+            document.getElementById('wrong-words-list').insertAdjacentHTML(
+                'beforeend',
+                `
+                    <li>${word}</li>
+                `
+            );
+        });
+    }
+};
+
+const showCountedWords = (repeatedWords) => {
+    document
+        .getElementById('content')
+        .insertAdjacentHTML('beforeend', divRepeatedWords);
+    const blockRepeatedWords = document.getElementById('repeated-words');
+    blockRepeatedWords.insertAdjacentHTML(
+        'afterbegin',
+        `<h2>Повторы слов</h2>`
+    );
+    for (let key in repeatedWords) {
+        if (repeatedWords[key] > 2) {
+            blockRepeatedWords.insertAdjacentHTML(
+                'beforeend',
+                `<p>Слово <strong style="text-transform: uppercase;">${key}</strong> повторяется в чате ${repeatedWords[key]} раз(а)</p><br>`
+            );
+        }
+    }
+};
+
+const renderCopyPage = () => {
+    const body = document.getElementById('body');
+    if (!document.getElementById('content')) {
+        body.insertAdjacentHTML('beforeend', divContent);
+    }
+    const contentBlock = document.getElementById('content');
+
+    contentBlock.innerHTML = '';
+
+    contentBlock.insertAdjacentHTML('afterbegin', contentOfCopyPage);
+
+    const listItems = document.querySelectorAll('.click-for-copy-list-item');
+    const copyListItemData = (item) => {
+        navigator.clipboard
+            .writeText(item.attributes['clipboard-value'].value)
+            .then(() => {
+                document
+                    .getElementById('body')
+                    .insertAdjacentHTML(
+                        'afterbegin',
+                        `<div class="copied-banner">Скопировано</div>`
+                    );
+                setTimeout(() => {
+                    document.querySelector('.copied-banner').remove();
+                }, 400);
+            });
+    };
+    for (let item of listItems) {
+        item.addEventListener('click', () => {
+            copyListItemData(item);
+        });
+    }
 };
 // Запускает логику. Проверяет на каком сайте пользователь и в зависимости от этого, рисует html
 const validUrl = async function () {
@@ -202,10 +341,9 @@ const validUrl = async function () {
             'https://portal2.infobip.com/conversations/my-work'
         )
     ) {
-        showChatInfoPage();
+        renderBonesForChatInfoPage();
     } else {
-        const body = document.getElementById('body');
-        body.innerHTML = `<h1 class='wrong-url'>Перейдите на страницу с чатом или отправкой формы</h1>`;
+        renderCopyPage();
     }
 };
 

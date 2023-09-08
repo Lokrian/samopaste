@@ -77,10 +77,8 @@ body {
 }
 
 .wrong-url {
-    width: 400px;
-    color: #fff;
     text-align: center;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 #data-changed {
@@ -93,33 +91,85 @@ body {
     color: rgb(136, 136, 136);
 }
 
-#wrapper {
+#content {
+    height: 100%;
+    display: flex;
+}
+
+#wrong-words {
     width: 90%;
     padding: 1rem;
     border: 1px solid #ccc;
 }
 
-#wrapper .scan-chat * {
+#wrong-words .scan-chat * {
     margin: 0;
     vertical-align: middle;
 }
 
-#wrapper .scan-chat {
+#wrong-words .scan-chat {
     display: flex;
     justify-content: center;
     margin: 0 auto;
     text-align: center;
 }
 
-#wrapper .scan-chat h1 {
+#wrong-words .scan-chat h1 {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
 
-#wrapper .scan-chat img {
+#wrong-words .scan-chat img {
     padding: 1rem;
     height: 25px;
 }
 
+.nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.3rem;
+}
+
+.nav * {
+    cursor: pointer;
+}
+
+#repeated-words {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 1rem;
+    border: 1px solid #ccc;
+}
+
+#content .copy-page {
+    height: 100%;
+    padding: 1rem;
+}
+
+#content .copy-page ul li {
+    margin-bottom: 0.7rem;
+    cursor: pointer;
+}
+
+#content .copy-page ul li:hover {
+    transition: all 0.2s;
+    color: #7147D7;
+}
+
+.copied-banner {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    font-size: large;
+    text-transform: uppercase;
+    background-color: rgba(95, 95, 95, 0.733);
+}

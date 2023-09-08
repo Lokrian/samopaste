@@ -137,7 +137,6 @@ const harmfulWords = [
     'складам',
     'складами',
     'складах',
-    'указанный',
     'внимательнее',
     'магазин-склад',
     'магазин-складе',
@@ -380,7 +379,7 @@ const buttons = [
     },
 ];
 // Содержит состояние(прошла ли операция по поиску слов на странице) и, если они есть, слова с ошибками.
-const answerWithMistakeWords = {
+let answerWithMistakeWords = {
     status: 'Operation in progress',
     wordsWithMistakes: [],
 };
@@ -422,11 +421,27 @@ chrome.runtime.onConnect.addListener(function (port) {
                     console.log('Stopped');
                 }
             }, 1000);
+            // Принудительно выключает интервал через 15 секунд
+            setTimeout(() => {
+                clearInterval(sendingInterval);
+            }, 15000);
         } else if (port.name === 'checkEmail') {
             const email = sessionStorage.getItem('email');
             port.postMessage({
                 email,
             });
+        } else if (port.name === 'wordCounter') {
+            let sendingInterval = setInterval(() => {
+                if (repeatedWords.status) {
+                    port.postMessage({ repeatedWords });
+                    clearInterval(sendingInterval);
+                }
+            }, 1000);
+
+            // Принудительно выключает интервал через 15 секунд
+            setTimeout(() => {
+                clearInterval(sendingInterval);
+            }, 15000);
         }
     });
 });
@@ -503,6 +518,8 @@ const findBadAnswerBlock = function (answersBlocks) {
         checkCorrectNamesOfSections(answerBlock, arrayOfWordsFromAnswer);
         checkMistakesInWords(answerBlock.innerText);
     }
+    answerWithMistakeWords.status = 'Operation is complete';
+    repeatedWords.status = 'Operation is complete';
 };
 // Проверяет есть ли в блоке с ответом неверные слова
 const findWrongWordsInAnswerBlock = function (
@@ -568,7 +585,6 @@ const checkMistakesInWords = async function (text) {
             }
         });
     }
-    answerWithMistakeWords.status = 'Operation is complete';
 };
 // Считает количество повторяемых слов, которые входят в объект wordsCheckedForRepeat и записывает их в repeatedWords.
 const countWordsInChat = function (words) {
