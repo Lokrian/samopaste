@@ -276,7 +276,6 @@ const wordsCheckedForRepeat = {
         'приложению',
         'приложением',
         'приложении',
-        'приложения',
         'приложений',
         'приложениям',
         'приложениями',
@@ -311,6 +310,7 @@ const wordsCheckedForRepeat = {
 };
 // Изменяемый объект, в который записывается, в формате слово: число, слово и сколько раз оно повторяется в чате.
 let repeatedWords = {};
+const correctWords = ['даркстор', 'ответит'];
 // Массив с объектами кнопок, которые рисуются в зависимости от страницы. У каждой кнопки свой функционал.
 const buttons = [
     {
@@ -607,6 +607,15 @@ const countWordsInChat = function (words) {
         }
     });
 };
+
+const makeSendButtonFree = function () {
+    const sendFormButton = document.querySelector(
+        '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.ThHDze > div.DE3NNc.CekdCb > div.lRwqcd > div.uArJ5e.UQuaGc.Y5sE8d.VkkpIf.QvWxOd'
+    );
+
+    sendFormButton.classList.add('free-this-button');
+};
+
 // Запускает логику в зависимости от того, где находится пользователь
 const start = function () {
     if (
@@ -615,9 +624,17 @@ const start = function () {
         window.location.origin === 'https://portal2.infobip.com'
     ) {
         initOperAnswers();
-    } else {
+    } else if (
+        window.location.href ===
+        'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/viewform'
+    ) {
         setAnswers();
         setButtonOnPage();
+    } else if (
+        window.location.href ===
+        'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/formResponse'
+    ) {
+        makeSendButtonFree();
     }
 };
 

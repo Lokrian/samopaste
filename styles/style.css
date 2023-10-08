@@ -13,3 +13,9 @@
     transition: all 0.1s;
     background-color: rgb(240, 239, 239);
 }
+
+.free-this-button {
+    position: fixed !important;
+    top: 65%;
+    left: 65%;
+}
