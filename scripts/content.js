@@ -377,6 +377,58 @@ const buttons = [
             }, 300);
         },
     },
+    {
+        'page': 'form',
+        'id': 'fill-chat-data-button',
+        'block': `<div id='fill-chat-data-button' class='fill-chat-data-button'>Заполнить</div>`,
+        'place':
+            '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.ThHDze > div.DE3NNc.CekdCb > div.lRwqcd',
+        'point': 'beforeend',
+        'urlOfPage':
+            'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/formResponse',
+
+        init() {
+            this.fillRisksCheckPoint();
+            this.fillDataField();
+            this.chooseBranchSelector();
+        },
+        fillRisksCheckPoint() {
+            const checkPoints = [
+                '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div:nth-child(7) > div > div > div.e12QUd > div > div.xOMX8e > div > div:nth-child(2) > span > div:nth-child(3) > div > div',
+                '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div:nth-child(7) > div > div > div.e12QUd > div > div.xOMX8e > div > div:nth-child(4) > span > div:nth-child(3) > div > div',
+                '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div:nth-child(7) > div > div > div.e12QUd > div > div.xOMX8e > div > div:nth-child(6) > span > div:nth-child(3) > div > div',
+            ];
+            for (let checkPoint of checkPoints) {
+                document.querySelector(checkPoint).click();
+            }
+        },
+        chooseBranchSelector() {
+            const branchList = document.querySelector(
+                '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div:nth-child(4) > div > div > div.vQES8d > div > div:nth-child(1) > div.ry3kXd'
+            );
+
+            branchList.click();
+
+            setTimeout(() => {
+                const operatorBranch = document.querySelector(
+                    '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.o3Dpx > div:nth-child(4) > div > div > div.vQES8d > .jgvuAb.ybOdnf.cGN2le.t9kgXb.llrsB.iWO5td > .OA0qNb.ncFHed.QXL7Te'
+                ).children[2];
+                operatorBranch.click();
+            }, 300);
+        },
+        fillDataField() {
+            const dataField = document.querySelector(
+                '.o7cIKf > .rFrNMe.yqQS1.hatWr.zKHdkd > .aCsJod.oJeWuf > .aXBtI.Wic03c > .Xb9hP > .whsOnd.zHQkBf'
+            );
+            const today = new Date();
+            today.setDate(today.getDate() - 1);
+            const yesterday = today.toLocaleDateString('en-ca');
+
+            dataField.setAttribute('data-initial-value', yesterday);
+
+            dataField.value = yesterday;
+        },
+    },
 ];
 // Содержит состояние(прошла ли операция по поиску слов на странице) и, если они есть, слова с ошибками.
 let answerWithMistakeWords = {
@@ -607,13 +659,20 @@ const countWordsInChat = function (words) {
         }
     });
 };
-
+// Делает кнопку отправки формы оторванной от низа формы.
 const makeSendButtonFree = function () {
-    const sendFormButton = document.querySelector(
+    const sendFormButtonInClaim = document.querySelector(
         '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.ThHDze > div.DE3NNc.CekdCb > div.lRwqcd > div.uArJ5e.UQuaGc.Y5sE8d.VkkpIf.QvWxOd'
     );
+    const sendFormButtonInChats = document.querySelector(
+        '#mG61Hd > div.RH5hzf.RLS9Fe > div > div.ThHDze > div.DE3NNc.CekdCb > div.lRwqcd'
+    ).lastChild;
 
-    sendFormButton.classList.add('free-this-button');
+    if (sendFormButtonInClaim) {
+        sendFormButtonInClaim.classList.add('free-this-button');
+    } else if (sendFormButtonInChats) {
+        sendFormButtonInChats.classList.add('free-this-button');
+    }
 };
 
 // Запускает логику в зависимости от того, где находится пользователь
@@ -635,6 +694,7 @@ const start = function () {
         'https://docs.google.com/forms/d/e/1FAIpQLSfBav-cTnb1nqIdXCLJQCv1xfnY_gsu2WkCO72B-hWAdk1McQ/formResponse'
     ) {
         makeSendButtonFree();
+        setButtonOnPage();
     }
 };
 
